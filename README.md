@@ -1,6 +1,8 @@
-# LikeLoop
+# 📸 LikeLoop - Instagram Clone
 
-A black-and-white Instagram clone built with the MERN stack and Cloudinary for image storage.
+![LikeLoop Logo](https://img.shields.io/badge/LikeLoop-Instagram%20Clone-black?style=for-the-badge)
+
+A modern, black-and-white Instagram clone built with the MERN stack (MongoDB, Express.js, React, Node.js) and Cloudinary for image hosting.
 
 ## Features
 
