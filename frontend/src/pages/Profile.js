@@ -16,6 +16,8 @@ const Profile = () => {
     bio: ''
   });
   const [uploadingAvatar, setUploadingAvatar] = useState(false);
+  const [followLoading, setFollowLoading] = useState(false);
+  const [isFollowing, setIsFollowing] = useState(false);
 
   const isOwnProfile = currentUser?.id === id;
 
@@ -48,6 +50,43 @@ const Profile = () => {
     fetchProfile();
     fetchUserPosts();
   }, [id]);
+
+  // Check if current user is following this profile
+  useEffect(() => {
+    if (profile && currentUser && !isOwnProfile) {
+      setIsFollowing(currentUser.following?.includes(id) || false);
+    }
+  }, [profile, currentUser, id, isOwnProfile]);
+
+  const handleFollowToggle = async () => {
+    if (!currentUser) return;
+    
+    setFollowLoading(true);
+    try {
+      if (isFollowing) {
+        // Unfollow
+        await axios.delete(`/api/users/follow/${id}`);
+        setIsFollowing(false);
+        setProfile(prev => ({
+          ...prev,
+          followerCount: (prev.followerCount || 0) - 1
+        }));
+      } else {
+        // Follow
+        await axios.post(`/api/users/follow/${id}`);
+        setIsFollowing(true);
+        setProfile(prev => ({
+          ...prev,
+          followerCount: (prev.followerCount || 0) + 1
+        }));
+      }
+    } catch (error) {
+      console.error('Error toggling follow:', error);
+      setError('Failed to update follow status');
+    } finally {
+      setFollowLoading(false);
+    }
+  };
 
   const handleEditProfile = async (e) => {
     e.preventDefault();
@@ -249,13 +288,23 @@ const Profile = () => {
                 </div>
               )}
 
-              {isOwnProfile && (
+              {isOwnProfile ? (
                 <div className="profile-actions">
                   <button 
                     onClick={() => setIsEditing(true)}
                     className="btn-secondary"
                   >
                     Edit Profile
+                  </button>
+                </div>
+              ) : (
+                <div className="profile-actions">
+                  <button 
+                    onClick={handleFollowToggle}
+                    disabled={followLoading}
+                    className={isFollowing ? "btn-secondary" : "btn-primary"}
+                  >
+                    {followLoading ? 'Loading...' : (isFollowing ? 'Unfollow' : 'Follow')}
                   </button>
                 </div>
               )}
