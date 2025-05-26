@@ -63,23 +63,26 @@ const Profile = () => {
     
     setFollowLoading(true);
     try {
-      if (isFollowing) {
-        // Unfollow
-        await axios.delete(`/api/users/follow/${id}`);
-        setIsFollowing(false);
-        setProfile(prev => ({
-          ...prev,
-          followerCount: (prev.followerCount || 0) - 1
-        }));
-      } else {
-        // Follow
-        await axios.post(`/api/users/follow/${id}`);
-        setIsFollowing(true);
-        setProfile(prev => ({
-          ...prev,
-          followerCount: (prev.followerCount || 0) + 1
-        }));
-      }
+      const response = await axios.post(`/api/users/follow/${id}`);
+      setIsFollowing(response.data.isFollowing);
+      
+      // Update follower count based on the response
+      setProfile(prev => ({
+        ...prev,
+        followerCount: response.data.isFollowing 
+          ? (prev.followerCount || 0) + 1 
+          : (prev.followerCount || 0) - 1
+      }));
+
+      // Update current user's following list in context
+      const updatedFollowing = response.data.isFollowing
+        ? [...(currentUser.following || []), id]
+        : (currentUser.following || []).filter(followingId => followingId !== id);
+      
+      updateUser({
+        following: updatedFollowing,
+        followingCount: updatedFollowing.length
+      });
     } catch (error) {
       console.error('Error toggling follow:', error);
       setError('Failed to update follow status');
@@ -288,26 +291,24 @@ const Profile = () => {
                 </div>
               )}
 
-              {isOwnProfile ? (
-                <div className="profile-actions">
+              <div className="profile-actions">
+                {isOwnProfile ? (
                   <button 
                     onClick={() => setIsEditing(true)}
                     className="btn-secondary"
                   >
                     Edit Profile
                   </button>
-                </div>
-              ) : (
-                <div className="profile-actions">
+                ) : currentUser ? (
                   <button 
                     onClick={handleFollowToggle}
                     disabled={followLoading}
                     className={isFollowing ? "btn-secondary" : "btn-primary"}
                   >
-                    {followLoading ? 'Loading...' : (isFollowing ? 'Unfollow' : 'Follow')}
+                    {followLoading ? '...' : (isFollowing ? 'Following' : 'Follow')}
                   </button>
-                </div>
-              )}
+                ) : null}
+              </div>
             </>
           )}
         </div>
