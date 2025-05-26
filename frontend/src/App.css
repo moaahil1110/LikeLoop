@@ -628,7 +628,119 @@ body {
   color: #000000;
 }
 
-/* Responsive Design */
+/* Search Page Styles */
+.search-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.search-header {
+  margin-bottom: 30px;
+}
+
+.search-header h1 {
+  font-size: 28px;
+  font-weight: 300;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.search-form {
+  margin-bottom: 20px;
+}
+
+.search-input-group {
+  display: flex;
+  gap: 10px;
+}
+
+.search-input-group .form-input {
+  flex: 1;
+}
+
+.search-results {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  background-color: #000;
+  border: 1px solid #dbdbdb;
+}
+
+.search-result-item {
+  display: flex;
+  align-items: center;
+  padding: 16px;
+  background-color: #fff;
+  text-decoration: none;
+  color: inherit;
+  transition: background-color 0.2s ease;
+}
+
+.search-result-item:hover {
+  background-color: #fafafa;
+}
+
+.search-result-avatar {
+  margin-right: 12px;
+}
+
+.search-result-avatar img {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.search-result-avatar .avatar-placeholder {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background-color: #f0f0f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: #666;
+}
+
+.search-result-info {
+  flex: 1;
+}
+
+.search-result-username {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0 0 2px 0;
+  color: #000;
+}
+
+.search-result-bio {
+  font-size: 14px;
+  color: #8e8e8e;
+  margin: 0 0 2px 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.search-result-followers {
+  font-size: 12px;
+  color: #8e8e8e;
+  margin: 0;
+}
+
+.no-results {
+  text-align: center;
+  padding: 40px;
+  color: #8e8e8e;
+}
+
+.no-results p {
+  font-size: 16px;
+  margin: 0;
+}
+
 @media (max-width: 768px) {
   .header {
     padding: 0 15px;
@@ -664,6 +776,18 @@ body {
   
   .auth-box {
     padding: 30px 20px;
+  }
+  
+  .search-container {
+    padding: 10px;
+  }
+  
+  .search-input-group {
+    flex-direction: column;
+  }
+  
+  .search-input-group .form-input {
+    margin-bottom: 10px;
   }
 }
 

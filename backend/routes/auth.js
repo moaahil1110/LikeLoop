@@ -84,10 +84,13 @@ router.post('/register', [
 });
 
 // @route   POST /api/auth/login
-// @desc    Login user
+// @desc    Login user with email or username
 // @access  Public
 router.post('/login', [
-  body('email').isEmail().withMessage('Please enter a valid email').normalizeEmail(),
+  body('emailOrUsername')
+    .notEmpty()
+    .withMessage('Email or username is required')
+    .trim(),
   body('password').notEmpty().withMessage('Password is required')
 ], async (req, res) => {
   try {
@@ -100,18 +103,26 @@ router.post('/login', [
       });
     }
 
-    const { email, password } = req.body;
+    const { emailOrUsername, password } = req.body;
 
-    // Find user by email
-    const user = await User.findOne({ email });
+    // Determine if input is email or username
+    const isEmail = emailOrUsername.includes('@');
+    
+    // Find user by email or username
+    const user = await User.findOne(
+      isEmail 
+        ? { email: emailOrUsername.toLowerCase() }
+        : { username: emailOrUsername }
+    );
+    
     if (!user) {
-      return res.status(400).json({ message: 'Invalid email or password' });
+      return res.status(400).json({ message: 'Invalid email/username or password' });
     }
 
     // Check password
     const isMatch = await user.comparePassword(password);
     if (!isMatch) {
-      return res.status(400).json({ message: 'Invalid email or password' });
+      return res.status(400).json({ message: 'Invalid email/username or password' });
     }
 
     // Generate token

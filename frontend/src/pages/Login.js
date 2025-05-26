@@ -4,7 +4,7 @@ import { useAuth } from '../contexts/AuthContext';
 
 const Login = () => {
   const [formData, setFormData] = useState({
-    email: '',
+    emailOrUsername: '',
     password: ''
   });
   const [error, setError] = useState('');
@@ -28,7 +28,7 @@ const Login = () => {
     setError('');
 
     try {
-      const result = await login(formData.email, formData.password);
+      const result = await login(formData.emailOrUsername, formData.password);
       
       if (result.success) {
         navigate('/feed');
@@ -42,7 +42,7 @@ const Login = () => {
     }
   };
 
-  const isFormValid = formData.email && formData.password;
+  const isFormValid = formData.emailOrUsername && formData.password;
 
   return (
     <div className="auth-container">
@@ -57,19 +57,19 @@ const Login = () => {
 
         <form onSubmit={handleSubmit} className="auth-form">
           <div className="form-group">
-            <label htmlFor="email" className="form-label">
-              Email
+            <label htmlFor="emailOrUsername" className="form-label">
+              Email or Username
             </label>
             <input
-              type="email"
-              id="email"
-              name="email"
-              value={formData.email}
+              type="text"
+              id="emailOrUsername"
+              name="emailOrUsername"
+              value={formData.emailOrUsername}
               onChange={handleChange}
               className="form-input"
-              placeholder="Enter your email"
+              placeholder="Enter your email or username"
               required
-              autoComplete="email"
+              autoComplete="username"
             />
           </div>
 

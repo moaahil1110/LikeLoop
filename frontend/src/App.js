@@ -8,6 +8,7 @@ import Register from './pages/Register';
 import Feed from './pages/Feed';
 import Profile from './pages/Profile';
 import PostDetail from './pages/PostDetail';
+import Search from './pages/Search';
 import './App.css';
 
 // Protected Route Component
@@ -63,6 +64,11 @@ function AppRoutes() {
           <Route path="/feed" element={
             <ProtectedRoute>
               <Feed />
+            </ProtectedRoute>
+          } />
+          <Route path="/search" element={
+            <ProtectedRoute>
+              <Search />
             </ProtectedRoute>
           } />
           <Route path="/profile/:id" element={

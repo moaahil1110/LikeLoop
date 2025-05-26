@@ -27,6 +27,9 @@ const Header = () => {
           <Link to="/feed" className="nav-link">
             Feed
           </Link>
+          <Link to="/search" className="nav-link">
+            Search
+          </Link>
           <Link to={`/profile/${user?.id}`} className="nav-link">
             Profile
           </Link>
